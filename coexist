@@ -42,20 +42,29 @@ mkdir -p $BIN_DIR
 ## it to build an android application that points to your
 ## server, with the icons and name you specify. The source will
 ## be removed after and the apk will be in this directory.
+echo
 cd $BIN_DIR
-git clone git://github.com/naddeoa/coexist-android.git
+echo "Downloading the latest version of Coexist Android"
+git clone git://github.com/naddeoa/coexist-android.git 2>&1
 cd coexist-android
+echo "Configuring Coexist Android according to $INIFILE"
 ./configure  \
   -i "$IMAGE"  \
   -I "$NOTIFICATION"  \
   -n $NAME \
   -p $PACKAGE \
   -h $API
-make
+make 2>&1
+echo "Copying apks to $BIN_DIR/bin"
 cp bin/*.apk $BIN_DIR
 
 ## Configure the web stuff
-cd $DIR/bin/coexist/web
+echo
+cd $BIN_DIR
+echo "Downloading the latest version of Coexist Server"
+git clone git://github.com/naddeoa/coexist-server.git 2>&1
+cd coexist-server
+echo "Configuring Coexist Android according to $INIFILE"
 ./configure \
   -v $VERSION \
   -u $USER \
@@ -65,10 +74,13 @@ cd $DIR/bin/coexist/web
   -s $SCHEMA \
   -m $DBMS \
   -h $HOST
-tar -zcf $BIN_DIR./$NAME-web.tgz *
+echo "Tarring the website to $BIN_DIR/bin"
+tar -zcf $BIN_DIR/$NAME-web.tgz *
 
 ## Scp the files to the server if a scp_to field was
 ## defined in the .ini file.
+exit 0
+cd $DIR
 iniVal scp_to;SCP=$VAL
 iniVal scp_port
 if [[ $VAL ]];then
