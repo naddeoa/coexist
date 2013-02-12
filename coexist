@@ -11,7 +11,7 @@ fi
 ## Helper function for parsing ini files
 VAL=
 iniVal(){
-  VAL=`sed -sn "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
+  VAL=`sed -sn -e "s/.*;.*//" -e "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
 }
 
 DIR=`pwd`
@@ -79,7 +79,6 @@ tar -zcf $BIN_DIR/$NAME-web.tgz *
 
 ## Scp the files to the server if a scp_to field was
 ## defined in the .ini file.
-exit 0
 cd $DIR
 iniVal scp_to;SCP=$VAL
 iniVal scp_port
