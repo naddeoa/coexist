@@ -1,0 +1,81 @@
+#!/bin/bash
+set -e
+
+## Set the default ini file location. Can be overwritten by the
+## first argument
+INIFILE=./coexist.ini
+if [[ $1 ]];then
+  INIFILE=$1
+fi
+
+## Helper function for parsing ini files
+VAL=
+iniVal(){
+  VAL=`sed -sn "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
+}
+
+DIR=`pwd`
+BIN_DIR=$DIR/bin
+
+## Get the necessary android values from the configuration file
+iniVal name;NAME=$VAL
+iniVal image;IMAGE=$DIR/$VAL
+iniVal notification;NOTIFICATION=$DIR/$VAL
+iniVal package;PACKAGE=$VAL
+iniVal api;API=$VAL
+
+
+## Get the necessary web values from the configuration file
+iniVal version;VERSION=$VAL
+iniVal user;USER=$VAL
+iniVal pass;PASS=$VAL
+iniVal db;DB=$VAL
+iniVal host;HOST=$VAL
+iniVal dbms;DBMS=$VAL
+iniVal create_dir;CREATE=$DIR/$VAL
+iniVal schema_dir;SCHEMA=$DIR/$VAL
+
+## Create the bin dir
+mkdir -p $BIN_DIR
+
+## Download the most recent version from git and configure
+## it to build an android application that points to your
+## server, with the icons and name you specify. The source will
+## be removed after and the apk will be in this directory.
+cd $BIN_DIR
+git clone git://github.com/naddeoa/coexist-android.git
+cd coexist-android
+./configure  \
+  -i "$IMAGE"  \
+  -I "$NOTIFICATION"  \
+  -n $NAME \
+  -p $PACKAGE \
+  -h $API
+make
+cp bin/*.apk $BIN_DIR
+
+## Configure the web stuff
+cd $DIR/bin/coexist/web
+./configure \
+  -v $VERSION \
+  -u $USER \
+  -p $PASS \
+  -d $DB \
+  -c $CREATE \
+  -s $SCHEMA \
+  -m $DBMS \
+  -h $HOST
+tar -zcf $BIN_DIR./$NAME-web.tgz *
+
+## Scp the files to the server if a scp_to field was
+## defined in the .ini file.
+iniVal scp_to;SCP=$VAL
+iniVal scp_port
+if [[ $VAL ]];then
+  SCP_PORT="-P $VAL"
+fi
+if [[ $SCP ]];then
+  echo "Copying the files to your server so you can untar them."
+  scp $SCP_PORT bin/*.apk bin/*tgz $SCP 
+fi
+
