@@ -18,6 +18,10 @@ iniVal(){
   VAL=`sed -sn -e "s/.*;.*//" -e "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
 }
 
+report(){
+  echo "## $1"
+}
+
 DIR=`pwd`
 BIN_DIR=$DIR/bin
 
@@ -60,13 +64,13 @@ mkdir -p $BIN_DIR
 ## be removed after and the apk will be in this directory.
 ##
 build_android(){
-  echo
+  report
   cd $BIN_DIR
-  echo "Downloading the latest version of Coexist Android"
+  report "Downloading the latest version of Coexist Android"
   rm -rf coexist-android
-  git clone git://github.com/naddeoa/coexist-android.git 2>&1
+  git clone git://github.com/naddeoa/coexist-android.git > /dev/null 2>&1
   cd coexist-android
-  echo "Configuring Coexist Android according to $INIFILE"
+  report "Configuring Coexist Android according to $INIFILE"
   ./configure  \
     -i "$IMAGE"  \
     -I "$NOTIFICATION"  \
@@ -74,7 +78,7 @@ build_android(){
     -p $PACKAGE \
     -h $API
   make 2>&1
-  echo "Copying apks to $BIN_DIR/bin"
+  report "Copying apks to $BIN_DIR/bin"
   cp bin/*.apk $BIN_DIR
 }
 if [[ $BUILD_ANDROID = "on" ]];then
@@ -85,13 +89,13 @@ fi
 ## Configure the web stuff if its enabled in the ini file
 ##
 build_server(){
-  echo
+  report
   cd $BIN_DIR
-  echo "Downloading the latest version of Coexist Server"
+  report "Downloading the latest version of Coexist Server"
   rm -rf coexist-server
-  git clone git://github.com/naddeoa/coexist-server.git 2>&1
+  git clone git://github.com/naddeoa/coexist-server.git > /dev/null 2>&1
   cd coexist-server
-  echo "Configuring Coexist Android according to $INIFILE"
+  report "Configuring Coexist Android according to $INIFILE"
   ./configure \
     -v $VERSION \
     -u $USER \
@@ -101,7 +105,7 @@ build_server(){
     -s $SCHEMA \
     -m $DBMS \
     -h $HOST
-  echo "Tarring the website to $BIN_DIR/bin"
+  report "Tarring the website to $BIN_DIR/bin"
   tar -zcf $BIN_DIR/$NAME-web.tgz *
 }
 if [[ $BUILD_SERVER = "on" ]];then
@@ -119,7 +123,7 @@ if [[ $VAL ]];then
   SCP_PORT="-P $VAL"
 fi
 if [[ $SCP ]];then
-  echo "Copying the files to your server so you can untar them."
+  report "Copying the files to your server so you can untar them."
   scp $SCP_PORT bin/*.apk bin/*tgz $SCP 
 fi
 

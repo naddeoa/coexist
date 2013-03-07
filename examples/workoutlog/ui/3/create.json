@@ -1,0 +1,41 @@
+{
+  "forms" : [
+    { 
+      "label":"Exercises",
+      "table":"Exercises",
+      "fields": [
+        {"label":"Exercise", "type":"text","column":"Exercise"}
+      ]
+    },
+    {
+      "label":"Add sets",
+      "table":"Sets",
+      "fields": [
+        {"label":"Your name","type":"text","column":"name"},
+        {"label":"Exercise","type":"reference","column":"exercise"},
+        {"label":"Set number","type":"integer","column":"set_num"},
+        {"label":"Number of reps","type":"integer","column":"reps_done"},
+        {"label":"Weight","type":"integer","column":"weight"},
+        {"label":"Date","type":"date","column":"date_done"}
+        
+      ]
+    },
+    {
+      "label":"Body Parts",
+      "table":"BodyParts",
+      "fields":[
+        {"label":"Body Part","type":"text","column":"part"}
+      ]
+    },
+    {
+      "label":"Measurements",
+      "table":"Measurements",
+      "fields":[
+        {"label":"Your name","type":"text","column":"name"},
+        {"label":"Body Part","type":"reference","column":"part"},
+        {"label":"Measurement","type":"float","column":"measurement"},
+        {"label":"Date","type":"date","column":"date_taken"}
+      ]
+    }
+  ]
+}
