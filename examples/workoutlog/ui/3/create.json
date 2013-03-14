@@ -12,7 +12,9 @@
       "table":"Sets",
       "fields": [
         {"label":"Your name","type":"text","column":"name"},
-        {"label":"Exercise","type":"reference","column":"exercise"},
+        {"label":"Exercise","type":"reference","column":"exercise",
+        "references":{"table":"Exercises","column":"Exercise"}
+        },
         {"label":"Set number","type":"integer","column":"set_num"},
         {"label":"Number of reps","type":"integer","column":"reps_done"},
         {"label":"Weight","type":"integer","column":"weight"},
@@ -32,7 +34,9 @@
       "table":"Measurements",
       "fields":[
         {"label":"Your name","type":"text","column":"name"},
-        {"label":"Body Part","type":"reference","column":"part"},
+        {"label":"Body Part","type":"reference","column":"part",
+        "references":{"table":"Measurement","column":"part"}
+        },
         {"label":"Measurement","type":"float","column":"measurement"},
         {"label":"Date","type":"date","column":"date_taken"}
       ]

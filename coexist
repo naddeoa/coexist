@@ -68,7 +68,11 @@ build_android(){
   cd $BIN_DIR
   report "Downloading the latest version of Coexist Android"
   rm -rf coexist-android
-  git clone git://github.com/naddeoa/coexist-android.git > /dev/null 2>&1
+#  git clone git://github.com/naddeoa/coexist-android.git > /dev/null 2>&1
+  wget https://github.com/naddeoa/coexist-android/archive/master.zip > /dev/null 2>&1
+  unzip master.zip
+  mv coexist-android-master coexist-android
+  rm master.zip
   cd coexist-android
   report "Configuring Coexist Android according to $INIFILE"
   ./configure  \
@@ -93,7 +97,11 @@ build_server(){
   cd $BIN_DIR
   report "Downloading the latest version of Coexist Server"
   rm -rf coexist-server
-  git clone git://github.com/naddeoa/coexist-server.git > /dev/null 2>&1
+#  git clone git://github.com/naddeoa/coexist-server.git > /dev/null 2>&1
+  wget https://github.com/naddeoa/coexist-server/archive/master.zip > /dev/null 2>&1
+  unzip master.zip
+  mv coexist-server-master coexist-server
+  rm master.zip
   cd coexist-server
   report "Configuring Coexist Android according to $INIFILE"
   ./configure \
