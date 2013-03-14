@@ -1,0 +1,110 @@
+This respository houses the build/install script for Coexist (named coexist).
+This README serves as an introduction to coexist using the sample application
+found in examples/workoutlog.
+
+
+
+---------------------------------------------------------
+-- DEPENDENCIES
+---------------------------------------------------------
+
+Android SDK
+
+  You must download and install the Android SDK, and the platform-tools/ and
+  tools/ folders should be on your path (at least while using the coexist script).
+  In particular, coexist needs to use the adb and android executables. You must
+  also install Android 4.1 in the SDK, aka target 10, aka android-16.
+
+
+
+---------------------------------------------------------
+-- COMPILATION  (short)
+---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------
+-- RELATED REPOSITORIES
+---------------------------------------------------------
+
+https://github.com/naddeoa/coexist-android.git
+
+  The Android client code. For now, this is the only client implemented, but
+  other clients will more or less be ports of this code.
+
+https://github.com/naddeoa/coexist-server.git
+
+  The server code. This is the PHP based code that serves as an API to 
+  the coexist clients. 
+
+
+
+---------------------------------------------------------
+-- FILES
+---------------------------------------------------------
+
+./coexist
+
+  A script that is used for downloading, compiling and configuring the
+  various parts of Coexist.
+
+./coexist.ini
+
+  A sample settings file for Coexist. It contains all of the available
+  configuration options with detailed comments. These values are read
+  by the coexist script and used to configure / compile the various parts
+  of coexist.
+
+./examples/workoutlog/
+
+  An entire sample project.
+
+./examples/workoutlog/logo.png
+
+  The icon of the sample project. It is declared as the icon in its 
+  coexist.ini file.
+
+./examples/workoutlog/notification.png
+
+  The notification icon of the sample project. In Android, it can be seen
+  in the notifications tray. It is declared as the notification icon in
+  its coexist.ini file.
+
+./examples/workoutlog/coexist.ini
+
+  The project configuration. These contain sample values for each of the
+  possible options. You will have to supply a username, password and 
+  database name once you have some picked out (assuming you will be testing
+  the project out).
+
+./examples/workoutlog/ui/1/create.json
+
+  This is json metamodel for version 1 of this application (because it is
+  in the "1" folder). This tells the clients how to map UI forms to 
+  database columns, and restricts the possible input of some fields (integer
+  fields can only be integers, date fields can only be dates etc.)
+
+./examples/workoutlog/sql/mysql/1/schema.sql
+
+  This is the SQL to create the database on mysql clients. This happens to also
+  be what I've used to build the database on the server, but that isn't yet
+  automated. This project uses mysql (though other dbms are possible). Execute
+  the typical mysql < sql/mysql/1/schema.sql to build the backend.
+
+./examples/workoutlog/sql/sqlite/1/schema.sql
+
+  This is the SQL to create the database on sqlite clients. This is what
+  the Android client will be requesting from the API. You must have a schema
+  defined for the current version. In this application, the current version is
+  1 (because the coexist.ini file says so), so you must have a <dbms>/1/schema.sql
+  file for every dbms you intent on using. If you are going to use Android, then
+  you need a sqlite folder.
+
+
+
