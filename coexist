@@ -10,7 +10,7 @@ DIR=`pwd`
 INIFILE=./coexist.ini
 if [[ $1 ]];then
   INIFILE=$1
-  DIR=`dirname $1`
+  DIR="$PWD/`dirname $1`"
 fi
 BIN_DIR=$DIR/bin
 
@@ -27,7 +27,8 @@ report(){
 }
 
 quiet(){
-  eval "$@" > /dev/null 2>&1
+  eval "$@" 
+#  eval "$@" > /dev/null 2>&1
 }
 
 
