@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+##
+## Make sure the neccessary executables are on the path
+##
+needs(){
+  echo "## Coexist needs $1 but its not on the path."
+  exit 1
+}
+command -v adb > /dev/null 2>&1 || needs "adb"
+command -v android > /dev/null 2>&1 || needs "android"
+
+
 
 ##
 ## Set the default ini file location. Can be overwritten by the
@@ -17,47 +28,56 @@ BIN_DIR=$DIR/bin
 ##
 ## Helper function for parsing ini files
 ##
-VAL=
-iniVal(){
-  VAL=`sed -sn -e "s/.*;.*//" -e "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
-}
 
 report(){
   echo "## $1"
 }
 
+VAL=
+iniVal(){
+  VAL=`sed -sn -e "s/.*;.*//" -e "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
+}
+
+requireVal(){
+  VAL=`sed -sn -e "s/.*;.*//" -e "s/[^;]*\s*$1\s*=\s*\(.*\)/\1/p" < $INIFILE`
+  [[ $VAL ]] || (report "$1 was blank in the coexist.ini, please fill it in." && exit 1)
+}
+
+
 quiet(){
-  eval "$@" 
-#  eval "$@" > /dev/null 2>&1
+#  eval "$@" 
+  eval "$@" > /dev/null 2>&1
 }
 
 
 ##
 ## Which modules to build
 ##
-iniVal android;BUILD_ANDROID=$VAL
-iniVal server;BUILD_SERVER=$VAL
+requireVal android;BUILD_ANDROID=$VAL
+requireVal server;BUILD_SERVER=$VAL
 
 ##
 ## Get the necessary android values from the configuration file
 ##
-iniVal name;NAME=$VAL
-iniVal image;IMAGE=$DIR/$VAL
-iniVal notification;NOTIFICATION=$DIR/$VAL
-iniVal package;PACKAGE=$VAL
-iniVal api;API=$VAL
+requireVal name;NAME=$VAL
+requireVal image;IMAGE=$DIR/$VAL
+requireVal notification;NOTIFICATION=$DIR/$VAL
+requireVal package;PACKAGE=$VAL
+requireVal api;API=$VAL
 
 ##
 ## Get the necessary web values from the configuration file
 ##
-iniVal version;VERSION=$VAL
-iniVal user;USER=$VAL
-iniVal pass;PASS=$VAL
-iniVal db;DB=$VAL
-iniVal host;HOST=$VAL
-iniVal dbms;DBMS=$VAL
-iniVal create_dir;CREATE=$DIR/$VAL
-iniVal schema_dir;SCHEMA=$DIR/$VAL
+requireVal version;VERSION=$VAL
+requireVal user;USER=$VAL
+requireVal pass;PASS=$VAL
+requireVal db;DB=$VAL
+requireVal host;HOST=$VAL
+requireVal dbms;DBMS=$VAL
+requireVal create_dir;CREATE=$DIR/$VAL
+requireVal schema_dir;SCHEMA=$DIR/$VAL
+
+
 
 ##
 ## Create the bin dir
