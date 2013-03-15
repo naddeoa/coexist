@@ -1,37 +1,141 @@
-This respository houses the build/install script for Coexist (named coexist).
-This README serves as an introduction to coexist using the sample application
-found in examples/workoutlog.
+Project: Coexist
+Author: Anthony Naddeo
+
+Coexist is a framework that allows clients of any type to read and update a 
+shared database without writing any client code.
+
+This repository houses the build/install script for Coexist (named coexist).
+This readme serves as an introduction to coexist using the sample application
+found in examples/workoutlog. If you just want to try and build it, start at
+the DEPENDENCIES section, then move onto the COMPILATION section.
+
+Other sections of this readme explain the Coexist compilation process, 
+components and philosophy.
 
 
 
----------------------------------------------------------
--- DEPENDENCIES
----------------------------------------------------------
+--------------------------------------------------------------------------------
+-- DEPENDENCIES : do these things first
+--------------------------------------------------------------------------------
 
 Android SDK
 
   You must download and install the Android SDK, and the platform-tools/ and
-  tools/ folders should be on your path (at least while using the coexist script).
-  In particular, coexist needs to use the adb and android executables. You must
-  also install Android 4.1 in the SDK, aka target 10, aka android-16.
+  tools/ folders should be on your path (at least while using the coexist 
+  script). In particular, coexist needs to use the adb and android executables.   You must also install Android 4.1 in the SDK, aka target 10, aka android-16.
+
+Fill in examples/workoutlog/coexist.ini
+
+  The sample application's coexist.ini file is mostly filled out but you will
+  need to provide a url and database credentials before compiling. The 
+  actual coexist.ini file has useful documentation for each value. Also,
+  the FILES section at the bottom of this readme explains more.
+
+
+--------------------------------------------------------------------------------
+-- COMPILATION
+--------------------------------------------------------------------------------
+
+./coexist examples/workoutlog/coexist.ini
+
+  This will result in the creation of an Android apk and a tgz that contains
+  the PHP server side code. This is wxactly what happens:
+
+    1) Check to make sure adb and android are on the path.
+    2) Read all values from the coexist.ini file.
+    3) Download the latest Coexist Android code and configure it using the
+       relevant coexist.ini values.
+    4) Compile the Android application and put it in examples/workoutlog/bin/
+    
+    5) Download the latest Coexist server code and configure it using the
+       relevant coexist.ini values.
+    6) tar it and put it in examples/workoutlog/bin/
+
+
+Optionally place coexist on your path and execute it with no arguments in
+the same directory as a coexist.ini file.
+
+--------------------------------------------------------------------------------
+-- FAQ
+--------------------------------------------------------------------------------
+
+What is Coexist?
+
+  Coexist is a framework that allows clients of any type to read and update a
+  shared database (of any type).
+
+How does Coexist work?
+
+  Coexist defines a simple API that that clients can use to interface with a
+  remote server. All data is sent over the network in JSON form. As a Coexist
+  user, you won't be writing any client or server code, you will be creating
+  projects like the samples in examples folder that specify a name, and icon
+  and some other project specific things. Then you will execute the coexist
+  script (included in this repository) in your project's folder and it will 
+  produce installable  packages for the all of the client types (currently 
+  only Android) and the server code that you can scp over to your server. Then 
+  you can use your newly created database application, or keep making new ones 
+  for other needs you have.
+
+What does the server do?
+
+  The server (coexist-server on github) functions as an API. There are a few
+  different request types (that you only need to know about if you want to
+  write a coexist client)
+
+    1) /api/sync : Clients will send a request with timestamp data to this
+       address and the server will respond with all of the database rows that
+       this client is missing.
+
+    2) /api/schema: Clients will send requests to this address to get database
+       schema information that they can use to create a local database that
+       replicates the servers. All clients replicate the entire database 
+       locally currently as it was originally designed for smaller databases
+       on mobile phones with off-line readability in mind. The exact schema
+       returned depends on the database that the client uses. For example, the 
+       Android Coexist client requests a sqlite schema.
+
+    3) /api/crud : Clients will send requests to this address to get metadata
+       information in JSON form. All clients will use the same metadata,
+       regardless of what type they are. This metadata will tell the client
+       how to display the contents of the database.
+
+I want an iOS client!
+
+  Currently there is only an Android client available, and the next on the
+  list is a Web client, but anyone is free to make a client themselves. All
+  it needs to do is understand the server's few API methods and the server
+  will supply the client with everything it needs to display a generic
+  database application. Clients will probably be very close ports of the 
+  Android code, so it might help to take a look at that first (or use the
+  Android application).
+
+Where do the schemas come from?
+
+  Currently, they are hand written SQL files. You will need to provide one
+  for every client type you plan on using. Currently, there is only an
+  Android client available, so you only NEED to write a sqlite schema. See
+  the sample project's sql directory for information on where you should put
+  it.
+
+Where does the JSON metadata come from?
+
+  Currently, it is hand written JSON. See the sample project's ui directory
+  for an example of what one looks like. This is the file that will tell
+  clients how to display the contents of the database. You can do useful
+  things with it, like assign Coexist data types to fields. For example, if
+  you specify that a field (which represents a column in a SQL table) is of
+  type 'date', then the Coexist clients can make user's lives easier by 
+  displaying a date picker when a user tries to fill out that field on their
+  client.
+
+What are the possible options for the JSON metadata?
 
 
 
----------------------------------------------------------
--- COMPILATION  (short)
----------------------------------------------------------
-
-
-
-
-
-
-
-
-
----------------------------------------------------------
+--------------------------------------------------------------------------------
 -- RELATED REPOSITORIES
----------------------------------------------------------
+--------------------------------------------------------------------------------
 
 https://github.com/naddeoa/coexist-android.git
 
@@ -45,9 +149,9 @@ https://github.com/naddeoa/coexist-server.git
 
 
 
----------------------------------------------------------
+--------------------------------------------------------------------------------
 -- FILES
----------------------------------------------------------
+--------------------------------------------------------------------------------
 
 ./coexist
 
@@ -59,7 +163,8 @@ https://github.com/naddeoa/coexist-server.git
   A sample settings file for Coexist. It contains all of the available
   configuration options with detailed comments. These values are read
   by the coexist script and used to configure / compile the various parts
-  of coexist.
+  of coexist. You can think of this as a proejct file for Coexist, similar
+  to a project.properties file for Eclipse, or a .pro file for Qt.
 
 ./examples/workoutlog/
 
@@ -102,9 +207,9 @@ https://github.com/naddeoa/coexist-server.git
   This is the SQL to create the database on sqlite clients. This is what
   the Android client will be requesting from the API. You must have a schema
   defined for the current version. In this application, the current version is
-  1 (because the coexist.ini file says so), so you must have a <dbms>/1/schema.sql
-  file for every dbms you intent on using. If you are going to use Android, then
-  you need a sqlite folder.
+  1 (because the coexist.ini file says so), so you must have a 
+  <dbms>/1/schema.sql file for every dbms you intent on using. If you are 
+  going to use Android, then you need a sqlite folder.
 
 
 
