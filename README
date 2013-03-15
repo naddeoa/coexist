@@ -18,6 +18,11 @@ components and philosophy.
 -- DEPENDENCIES : do these things first
 --------------------------------------------------------------------------------
 
+A server
+
+  You will need someplace to host your database. The Coexist clients will
+  all interface with the server through a web API.
+
 Android SDK
 
   You must download and install the Android SDK, and the platform-tools/ and
