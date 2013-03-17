@@ -27,7 +27,9 @@ Android SDK
 
   You must download and install the Android SDK, and the platform-tools/ and
   tools/ folders should be on your path (at least while using the coexist 
-  script). In particular, coexist needs to use the adb and android executables.   You must also install Android 4.1 in the SDK, aka target 10, aka android-16.
+  script). In particular, coexist needs to use the adb and android 
+  executables. You must also install Android 4.1 in the SDK, aka target 10, 
+  aka android-16.
 
 Fill in examples/workoutlog/coexist.ini
 
@@ -44,7 +46,7 @@ Fill in examples/workoutlog/coexist.ini
 ./coexist examples/workoutlog/coexist.ini
 
   This will result in the creation of an Android apk and a tgz that contains
-  the PHP server side code. This is wxactly what happens:
+  the PHP server side code. This is exactly what happens:
 
     1) Check to make sure adb and android are on the path.
     2) Read all values from the coexist.ini file.
