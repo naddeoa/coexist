@@ -53,3 +53,12 @@ CREATE TABLE Diet(
   `mod_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted` int(11) DEFAULT '0'
 );
+
+-- Convenient view for daily sums
+CREATE VIEW protein AS 
+  SELECT d.date_done, sum(f.protein*d.servings) as protein
+  FROM Diet d, Foods f
+  WHERE d.name = f.name
+  GROUP BY d.date_done
+  ORDER BY d.date_done DESC;
+
