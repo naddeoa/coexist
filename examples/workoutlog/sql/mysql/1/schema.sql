@@ -32,7 +32,7 @@ CREATE TABLE `Sets` (
   `date_done` date NOT NULL,
   `mod_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted` int(11) DEFAULT '0',
-  PRIMARY KEY (`exercise`,`set_num`,`reps_done`,`date_done`),
+  PRIMARY KEY (`exercise`,`set_num`,`date_done`),
   CONSTRAINT `Sets_ibfk_1` FOREIGN KEY (`exercise`) REFERENCES `Exercises` (`exercise`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
