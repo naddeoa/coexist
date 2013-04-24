@@ -36,3 +36,20 @@ CREATE TABLE `Sets` (
   CONSTRAINT `Sets_ibfk_1` FOREIGN KEY (`exercise`) REFERENCES `Exercises` (`exercise`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE Foods(
+  name VARCHAR(30),
+  protein FLOAT,
+  carbs FLOAT,
+  note VARCHAR(30),
+  `mod_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted` int(11) DEFAULT '0',
+  PRIMARY KEY (name)
+);
+
+CREATE TABLE Diet(
+  name VARCHAR(30) REFERENCES Foods,
+  servings FLOAT,
+  date_done date NOT NULL,
+  `mod_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted` int(11) DEFAULT '0'
+);

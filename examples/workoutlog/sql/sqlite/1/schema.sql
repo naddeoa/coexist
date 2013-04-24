@@ -1,7 +1,7 @@
 create table Exercises(
   exercise VARCHAR(30) PRIMARY KEY,
-  mod_ts DATETIME , -- metacolumn
-  deleted INTEGER  -- metacolumn
+  mod_ts DATETIME , 
+  deleted INTEGER  
 );
 
 create table Sets(
@@ -11,8 +11,8 @@ create table Sets(
   reps_done INTEGER ,
   weight INTEGER ,
   date_done DATE,
-  mod_ts DATETIME, -- metacolumn
-  deleted INTEGER -- metacolumn
+  mod_ts DATETIME, 
+  deleted INTEGER 
 );
 
 -- added in v2
@@ -31,3 +31,22 @@ create table Measurements(
   mod_ts TIMESTAMP,
   deleted INTEGER
 );
+
+-- added in v3
+CREATE TABLE Foods(
+  name VARCHAR(30),
+  protein FLOAT,
+  carbs FLOAT,
+  note VARCHAR(30),
+  mod_ts DATETIME,
+  deleted INTEGER,
+);
+
+CREATE TABLE Diet(
+  name VARCHAR(30),
+  servings FLOAT,
+  date_done date,
+  mod_ts DATETIME,
+  deleted INTEGER
+);
+

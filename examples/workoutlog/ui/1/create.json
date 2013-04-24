@@ -30,15 +30,35 @@
       ]
     },
     {
+      "label":"Foods",
+      "table":"Foods",
+      "fields":[
+        {"label":"Food","type":"text","column":"name"},
+        {"label":"Protein","type":"float","column":"protein"},
+        {"label":"Carbs","type":"float","column":"carbs"},
+        {"label":"Note","type":"text","column":"note"}
+        ]
+    },
+    {
       "label":"Measurements",
       "table":"Measurements",
       "fields":[
         {"label":"Your name","type":"text","column":"name"},
         {"label":"Body Part","type":"reference","column":"part",
-        "references":{"table":"Measurement","column":"part"}
+        "references":{"table":"BodyParts","column":"part"}
         },
         {"label":"Measurement","type":"float","column":"measurement"},
         {"label":"Date","type":"date","column":"date_taken"}
+      ]
+    },
+    {
+      "label":"Diet",
+      "table":"Diet",
+      "fields":[
+        {"label":"Food","column":"name","type":"reference",
+        "references":{"table":"Measurements","column":"name"}},
+        {"label":"Serving amount","type":"text","column":"servings"},
+        {"label":"Date","type":"date","column":"date_done"}
       ]
     }
   ]
