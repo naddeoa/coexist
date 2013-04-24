@@ -56,7 +56,7 @@
       "table":"Diet",
       "fields":[
         {"label":"Food","column":"name","type":"reference",
-        "references":{"table":"Measurements","column":"name"}},
+        "references":{"table":"Foods","column":"name"}},
         {"label":"Serving amount","type":"text","column":"servings"},
         {"label":"Date","type":"date","column":"date_done"}
       ]
