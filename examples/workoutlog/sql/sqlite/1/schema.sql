@@ -12,7 +12,8 @@ create table Sets(
   weight INTEGER ,
   date_done DATE,
   mod_ts DATETIME, 
-  deleted INTEGER 
+  deleted INTEGER,
+  PRIMARY KEY (name,exercise,set_num,date_done)
 );
 
 -- added in v2
@@ -34,7 +35,7 @@ create table Measurements(
 
 -- added in v3
 CREATE TABLE Foods(
-  name VARCHAR(30),
+  name VARCHAR(30) PRIMARY KEY,
   protein FLOAT,
   carbs FLOAT,
   note VARCHAR(30),
