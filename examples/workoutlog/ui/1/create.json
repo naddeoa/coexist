@@ -61,5 +61,12 @@
         {"label":"Date","type":"date","column":"date_done"}
       ]
     }
+  ],
+  "views":[
+    {
+      "label":"Daily protein",
+      "table":"Protein",
+      "sql":"SELECT d.date_done, sum(f.protein*d.servings) as protein FROM Diet d, Foods f WHERE d.name = f.name GROUP BY d.date_done ORDER BY d.date_done DESC"
+    }
   ]
 }
